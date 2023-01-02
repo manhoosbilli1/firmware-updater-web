@@ -4,7 +4,9 @@ import "./install-dialog.js";
 export const connect = async (button: InstallButton) => {
   let port: SerialPort | undefined;
   try {
-    port = await navigator.serial.requestPort();
+    const usbVendorId = 0x1A86;
+    const usbProductId = 0x7523;
+    port = await navigator.serial.requestPort({ filters: [{ usbVendorId , usbProductId}]})
   } catch (err: any) {
     if ((err as DOMException).name === "NotFoundError") {
       import("./no-port-picked/index").then((mod) =>
